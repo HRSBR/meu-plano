@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meu Plano">
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%0A%20%20%22name%22%3A%20%22Meu%20Plano%20Di%C3%A1rio%22%2C%0A%20%20%22short_name%22%3A%20%22Meu%20Plano%22%2C%0A%20%20%22description%22%3A%20%22Jejum%20%2B%20Estudos%20%C2%B7%20Calend%C3%A1rio%20pessoal%22%2C%0A%20%20%22start_url%22%3A%20%22./index.html%22%2C%0A%20%20%22display%22%3A%20%22standalone%22%2C%0A%20%20%22background_color%22%3A%20%22%231a1a1a%22%2C%0A%20%20%22theme_color%22%3A%20%22%231a1a1a%22%2C%0A%20%20%22orientation%22%3A%20%22portrait%22%2C%0A%20%20%22icons%22%3A%20%5B%0A%20%20%20%20%7B%20%22src%22%3A%20%22icon-192.png%22%2C%20%22sizes%22%3A%20%22192x192%22%2C%20%22type%22%3A%20%22image/png%22%20%7D%2C%0A%20%20%20%20%7B%20%22src%22%3A%20%22icon-512.png%22%2C%20%22sizes%22%3A%20%22512x512%22%2C%20%22type%22%3A%20%22image/png%22%20%7D%0A%20%20%5D%0A%7D%0A">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAACk0lEQVR42u3csRGAIBBFQeq4AuzK+k1NHEJJiQyIzmODV8Bn3DGCFhGvtGvNIQgACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkAaTMA13lIywEgACoA8LtVxu8GAAEAgAAAQAAAIAAAEAAACAAABAAAAgAAAQCAAABAAAAgAAAQAAAIAAAEAAACAAABAIAAAEAAACAAABAAWQ62P7c+AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACoByDbFUIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALALAADsAgAAuwAAwC4AALALgNoAPI8OAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAODqoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBKAAQAAAIAAAEAgAAAQAAAIAAAEAAACAAABAAAAgAAAQCAAABAAAAgAAAQAAAIAAAEAAACAAABAIAAAEAAACAA5iHSSgAIgD8DkDIHgACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQkjUAskJST4TjBz8AAAAASUVORK5CYII=">
+<title>Meu Plano Diário</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f5f0;
+    --white: #ffffff;
+    --border: #e2ddd6;
+    --text: #1a1a1a;
+    --text-muted: #888;
+    --text-light: #bbb;
+    --fast-bg: #1a1a1a;
+    --fast-text: #f7f5f0;
+    --prep-bg: #f0ebe3;
+    --prep: #5c4a3a;
+    --diet-bg: #edf4ef;
+    --diet: #3a6b4a;
+    --phase1: #c4873a;
+    --phase2: #3a6b9c;
+    --phase3: #7c3aad;
+    --today: #e85d26;
+    --psych: #6b3a9c;
+    --psych-bg: #f3eeff;
+    --neuro: #1a6b8a;
+    --neuro-bg: #e8f4f8;
+    --book: #8a5a1a;
+    --book-bg: #fef5e8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding-bottom: 60px; }
+
+  .header { background: var(--text); color: var(--bg); padding: 28px 20px 22px; text-align: center; }
+  .header-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; opacity: 0.45; margin-bottom: 8px; }
+  .header h1 { font-size: 21px; font-weight: 300; letter-spacing: -0.02em; }
+  .header h1 strong { font-weight: 600; }
+  .header-sub { margin-top: 6px; font-size: 12px; opacity: 0.45; font-family: 'JetBrains Mono', monospace; }
+
+  /* Tabs */
+  .tabs { display: flex; background: var(--white); border-bottom: 1px solid var(--border); }
+  .tab { flex: 1; padding: 11px 0; text-align: center; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .tab.active { color: var(--text); border-bottom-color: var(--text); }
+
+  /* Legend */
+  .legend { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--white); }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text-muted); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 2px; }
+
+  /* Week blocks */
+  .week-block { border-bottom: 2px solid var(--border); }
+  .week-header { display: flex; align-items: center; gap: 10px; padding: 11px 16px; background: var(--white); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .week-phase { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; padding: 3px 7px; border-radius: 2px; font-weight: 500; }
+  .phase-1 { background: #fdf0e0; color: var(--phase1); }
+  .phase-2 { background: #e0edf8; color: var(--phase2); }
+  .phase-3 { background: #f0e8f8; color: var(--phase3); }
+  .week-title { font-size: 12px; font-weight: 500; flex: 1; }
+  .week-dates { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); }
+
+  /* Day rows */
+  .day-row { display: grid; grid-template-columns: 52px 1fr; border-bottom: 1px solid var(--border); min-height: 60px; background: var(--white); cursor: pointer; transition: background 0.12s; }
+  .day-row:hover { background: #fafaf8; }
+  .day-row.is-today .day-left { background: var(--today); }
+  .day-row.is-today .day-num { color: white; }
+  .day-row.is-today .day-name { color: rgba(255,255,255,0.65); }
+
+  .day-left { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 0; border-right: 1px solid var(--border); }
+  .day-name { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2px; }
+  .day-num { font-size: 19px; font-weight: 300; line-height: 1; color: var(--text); }
+
+  .day-right { padding: 9px 13px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+  .day-tags { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+  .day-tag { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 2px; font-weight: 500; }
+  .tag-fast { background: var(--fast-bg); color: var(--fast-text); }
+  .tag-prep { background: var(--prep-bg); color: var(--prep); }
+  .tag-diet { background: var(--diet-bg); color: var(--diet); }
+  .tag-psych { background: var(--psych-bg); color: var(--psych); }
+  .tag-neuro { background: var(--neuro-bg); color: var(--neuro); }
+  .tag-book { background: var(--book-bg); color: var(--book); }
+
+  .day-title { font-size: 12px; font-weight: 500; }
+  .day-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  .chevron { font-size: 10px; color: var(--text-light); margin-left: auto; transition: transform 0.2s; }
+  .day-row.expanded .chevron { transform: rotate(180deg); }
+
+  /* Detail panel */
+  .day-detail { display: none; background: #fafaf8; border-bottom: 1px solid var(--border); }
+  .day-detail.open { display: block; }
+
+  .detail-section { padding: 12px 16px 12px 68px; border-bottom: 1px solid var(--border); }
+  .detail-section:last-child { border-bottom: none; }
+  .detail-section-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 8px; }
+  .detail-items { display: grid; gap: 5px; }
+  .detail-item { display: flex; gap: 10px; align-items: flex-start; }
+  .detail-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-light); min-width: 42px; padding-top: 1px; }
+  .detail-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+  .detail-text strong { font-weight: 600; }
+
+  /* Task list with checkboxes */
+  .task-list { display: grid; gap: 6px; }
+  .task-item { display: flex; align-items: flex-start; gap: 9px; }
+  .task-check { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 3px; cursor: pointer; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; background: white; }
+  .task-check.done { background: var(--text); border-color: var(--text); color: white; font-size: 10px; }
+  .task-item.done .task-label { text-decoration: line-through; color: var(--text-muted); }
+  .task-label { font-size: 12px; line-height: 1.5; cursor: pointer; }
+  .task-meta { font-size: 10px; color: var(--text-light); margin-top: 1px; }
+
+  .allowed-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .chip { font-size: 11px; background: var(--border); border-radius: 20px; padding: 2px 9px; color: var(--text-muted); }
+  .tip-text { margin-top: 8px; font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+  /* Install banner */
+  #install-banner {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--text);
+    color: var(--bg);
+    padding: 14px 20px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+  }
+  #install-banner p { font-size: 13px; line-height: 1.4; opacity: 0.85; }
+  #install-banner p strong { opacity: 1; display: block; font-size: 14px; margin-bottom: 2px; }
+  .install-btn {
+    background: var(--today);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .install-close {
+    background: none; border: none; color: var(--bg); opacity: 0.4;
+    font-size: 20px; cursor: pointer; flex-shrink: 0; padding: 0 4px;
+  }
+
+  /* Safe area for notch phones */
+  body { padding-bottom: env(safe-area-inset-bottom, 60px); }
+
+  /* Study section accent lines */
+  .section-psych .detail-section-title { color: var(--psych); }
+  .section-neuro .detail-section-title { color: var(--neuro); }
+  .section-book .detail-section-title { color: var(--book); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">PLANO DIÁRIO · JEJUM + ESTUDOS</div>
+  <h1>Terça de <strong>Jejum</strong> · Todo dia <strong>Aprender</strong></h1>
+  <div class="header-sub">18 ago → 22 set · 5 semanas</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="setView('all')">Tudo</div>
+  <div class="tab" onclick="setView('fast')">Jejum</div>
+  <div class="tab" onclick="setView('study')">Estudos</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#1a1a1a"></div>Jejum</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f0ebe3;border:1px solid #c4a882"></div>Preparação</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#edf4ef;border:1px solid #8ab89a"></div>Dieta normal</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--psych-bg);border:1px solid #b08ad4"></div>Psicanálise</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--neuro-bg);border:1px solid #7ab8d0"></div>Neurociência</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--book-bg);border:1px solid #d4a870"></div>Leitura</div>
+</div>
+
+<div id="install-banner">
+  <p><strong>Instalar como app</strong>Adiciona à tela inicial e usa offline</p>
+  <button class="install-btn" onclick="installApp()">Instalar</button>
+  <button class="install-close" onclick="this.parentElement.style.display='none'">×</button>
+</div>
+
+<div id="calendarRoot"></div>
+
+<script>
+const START = new Date(2026, 7, 18);
+const TODAY = new Date(2026, 7, 17);
+
+const phases = [
+  { weeks:[1,2], label:"FASE 1", name:"Adaptação · 12h jejum", cls:"phase-1" },
+  { weeks:[3,4], label:"FASE 2", name:"Desenvolvimento · 16h jejum", cls:"phase-2" },
+  { weeks:[5],   label:"FASE 3", name:"Objetivo · 24h jejum", cls:"phase-3" },
+];
+
+const dayNames = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
+const monthNames = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+
+// Study rotation: each day gets a study focus
+// Cycle: psico, neuro, leitura, psico, neuro, leitura, livre
+const studyRotation = [
+  { type:"psych",  tag:"PSICANÁLISE",  cls:"tag-psych",  label:"Estudar Psicanálise",   detail:"Conceitos freudianos, estrutura do aparelho psíquico, defesas e transferência.", meta:"30–45 min" },
+  { type:"neuro",  tag:"NEUROCIÊNCIA", cls:"tag-neuro",  label:"Estudar Neurociência",  detail:"Funcionamento do cérebro, neurônios, neuroplasticidade e cognição.", meta:"30–45 min" },
+  { type:"book",   tag:"LEITURA",      cls:"tag-book",   label:"Ler Harry Potter",       detail:"Harry Potter e a Pedra Filosofal — continue de onde parou.", meta:"20–40 min" },
+  { type:"psych",  tag:"PSICANÁLISE",  cls:"tag-psych",  label:"Estudar Psicanálise",   detail:"Revisão do que aprendeu + explore um novo conceito.", meta:"30–45 min" },
+  { type:"neuro",  tag:"NEUROCIÊNCIA", cls:"tag-neuro",  label:"Estudar Neurociência",  detail:"Aprofunde o tema da última sessão ou explore um novo.", meta:"30–45 min" },
+  { type:"book",   tag:"LEITURA",      cls:"tag-book",   label:"Ler Harry Potter",       detail:"Continue a leitura. Tente chegar a um capítulo por sessão.", meta:"20–40 min" },
+  { type:"livre",  tag:null,           cls:null,         label:null,                     detail:null, meta:null },
+];
+
+// Extra study tasks per day type
+const extraStudyByDay = {
+  fast: [
+    { tag:"PSICANÁLISE", cls:"tag-psych", label:"Ouvir podcast de psicanálise", detail:"Jejum é ótimo para ouvir conteúdo passivo. Procure: 'Freudcast' ou 'Inconsciente Coletivo'.", meta:"Qualquer horário" },
+  ],
+  prep: [
+    { tag:"LEITURA", cls:"tag-book", label:"Ler antes de dormir", detail:"10–20 páginas de Harry Potter. Leitura leve antes do jejum é perfeita.", meta:"Noite" },
+  ],
+  diet: [],
+};
+
+let currentView = "all";
+let checkedTasks = {};
+
+function addDays(date, n) {
+  const d = new Date(date); d.setDate(d.getDate() + n); return d;
+}
+function isSameDay(a, b) {
+  return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+}
+function isTuesday(d) { return d.getDay()===2; }
+function isMonday(d)  { return d.getDay()===1; }
+
+function getDayType(date) {
+  if (isTuesday(date)) return "fast";
+  if (isMonday(date))  return "prep";
+  return "diet";
+}
+
+function getFastSchedule(weekNum) {
+  if (weekNum<=2) return {
+    hours:"12h", window:"12h às 00h",
+    items:[
+      {time:"08h",    text:"<strong>Acorda:</strong> Café preto ou chá. Água à vontade."},
+      {time:"10h",    text:"<strong>Meio do jejum:</strong> Hidrate. Bom horário para estudar."},
+      {time:"12h",    text:"<strong>Quebra o jejum ✓</strong> Ovos + fruta ou iogurte + castanhas."},
+      {time:"16h",    text:"<strong>Refeição principal:</strong> Proteína + carboidrato complexo."},
+      {time:"19h30",  text:"<strong>Última refeição:</strong> Algo leve."},
+    ],
+    allowed:["Água","Café preto","Chá sem açúcar","Água com gás"],
+    tip:"Você dorme ~8h do jejum. Mal vai sentir!"
+  };
+  if (weekNum<=4) return {
+    hours:"16h", window:"12h às 20h",
+    items:[
+      {time:"08h",    text:"<strong>Acorda:</strong> Café preto. Foco aguçado durante o jejum."},
+      {time:"10h",    text:"<strong>Pico cognitivo:</strong> Ótimo para estudar psicanálise ou neuro."},
+      {time:"12h",    text:"<strong>Quebra o jejum ✓</strong> Proteína + gordura boa + fibra."},
+      {time:"16h",    text:"<strong>Refeição principal:</strong> A maior do dia."},
+      {time:"19h30",  text:"<strong>Última refeição:</strong> Leve. Às 20h começa o jejum."},
+    ],
+    allowed:["Água","Café preto","Chá","Água com gás"],
+    tip:"Jejum potencializa foco — aproveite para estudar de manhã."
+  };
+  return {
+    hours:"24h", window:"Jantar → próximo jantar",
+    items:[
+      {time:"20h (seg)",text:"<strong>Última refeição:</strong> Jante bem na segunda."},
+      {time:"Manhã",    text:"<strong>Café preto + água:</strong> Hidrate bastante."},
+      {time:"Tarde",    text:"<strong>Ponto crítico:</strong> Água com sal e limão se sentir fraqueza."},
+      {time:"20h (ter)",text:"<strong>Quebra o jejum ✓</strong> Comece leve: sopa, ovos."},
+    ],
+    allowed:["Água","Café preto","Chá","Eletrólitos","Caldo de osso"],
+    tip:"Dia mais desafiador — ocupe a mente com leitura ou estudos leves."
+  };
+}
+
+function getPrepSchedule(weekNum) {
+  return {
+    items:[
+      {time:"Dia",  text:"Dieta normal. Aproveite para estudar mais hoje."},
+      {time:"Noite",text:"<strong>Jante bem</strong> — última refeição antes do jejum de amanhã."},
+      {time:"20h+", text:weekNum>=5?"Começa o jejum de 24h a partir daqui.":"Descanse bem."},
+    ],
+    tip:weekNum>=5?"Amanhã é 24h — jante nutritivo!":"Amanhã é dia de jejum. Prepare-se!"
+  };
+}
+
+function getDietSchedule() {
+  return {
+    items:[
+      {time:"Manhã",  text:"Café nutritivo: proteína + fruta ou carboidrato."},
+      {time:"Almoço", text:"Refeição principal: proteína + salada + carboidrato."},
+      {time:"Tarde",  text:"Lanche leve se precisar: castanhas, iogurte ou fruta."},
+      {time:"Jantar", text:"Leve e equilibrado. Evite ultraprocessados."},
+    ],
+    tip:"Dia de dieta normal. Mantenha proteína em todas as refeições."
+  };
+}
+
+function getStudyTasks(dayIndex, dayType) {
+  const rot = studyRotation[dayIndex % 7];
+  const tasks = [];
+
+  if (rot.label) {
+    tasks.push({ ...rot, isMain: true });
+  }
+
+  const extras = extraStudyByDay[dayType] || [];
+  extras.forEach(e => tasks.push({ ...e, isMain: false }));
+
+  return tasks;
+}
+
+function toggleTask(uid) {
+  checkedTasks[uid] = !checkedTasks[uid];
+  const check = document.getElementById("chk-" + uid);
+  const item  = document.getElementById("ti-" + uid);
+  if (checkedTasks[uid]) {
+    check.classList.add("done");
+    check.textContent = "✓";
+    item.classList.add("done");
+  } else {
+    check.classList.remove("done");
+    check.textContent = "";
+    item.classList.remove("done");
+  }
+}
+
+function toggleDay(uid) {
+  const row    = document.getElementById(uid);
+  const detail = document.getElementById("detail-" + uid);
+  const isOpen = detail.classList.contains("open");
+  document.querySelectorAll(".day-detail.open").forEach(d => d.classList.remove("open"));
+  document.querySelectorAll(".day-row.expanded").forEach(r => r.classList.remove("expanded"));
+  if (!isOpen) {
+    detail.classList.add("open");
+    row.classList.add("expanded");
+    row.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+}
+
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll(".tab").forEach((t,i) => t.classList.toggle("active", ["all","fast","study"][i]===v));
+  document.querySelectorAll(".section-fast").forEach(s => s.style.display = (v==="study") ? "none" : "");
+  document.querySelectorAll(".section-study").forEach(s => s.style.display = (v==="fast") ? "none" : "");
+}
+
+function buildCalendar() {
+  const root = document.getElementById("calendarRoot");
+  let html = "";
+  let globalDay = 0;
+
+  for (let w = 1; w <= 5; w++) {
+    const phase = phases.find(p => p.weeks.includes(w));
+    const weekStart = addDays(START, (w-1)*7);
+    const weekEnd   = addDays(weekStart, 6);
+    const fmt = d => `${d.getDate()} ${monthNames[d.getMonth()]}`;
+
+    html += `<div class="week-block">
+      <div class="week-header">
+        <span class="week-phase ${phase.cls}">${phase.label}</span>
+        <span class="week-title">Semana ${w} — ${phase.name}</span>
+        <span class="week-dates">${fmt(weekStart)} → ${fmt(weekEnd)}</span>
+      </div>
+      <div class="days-list">`;
+
+    for (let d = 0; d < 7; d++, globalDay++) {
+      const date    = addDays(weekStart, d);
+      const type    = getDayType(date);
+      const isToday = isSameDay(date, TODAY);
+      const dayN    = dayNames[date.getDay()];
+      const dateN   = date.getDate();
+      const uid     = `day-${w}-${d}`;
+
+      // Fast/diet info
+      let fastTag="", fastTagCls="", mainTitle="", mainDesc="";
+      let fastData = null;
+      if (type==="fast") {
+        const fd = getFastSchedule(w);
+        fastTag=`⚡ JEJUM ${fd.hours}`; fastTagCls="tag-fast";
+        mainTitle=`Jejum de ${fd.hours}`; mainDesc=`Janela: ${fd.window}`;
+        fastData = fd;
+      } else if (type==="prep") {
+        fastTag="PREPARAÇÃO"; fastTagCls="tag-prep";
+        mainTitle="Dia de preparação"; mainDesc=w>=5?"Jante bem — amanhã é 24h!":"Jante bem antes do jejum de amanhã";
+        fastData = getPrepSchedule(w);
+      } else {
+        fastTag="DIETA NORMAL"; fastTagCls="tag-diet";
+        mainTitle="Dieta normal"; mainDesc="Siga seu plano alimentar";
+        fastData = getDietSchedule();
+      }
+
+      const studyTasks = getStudyTasks(globalDay, type);
+      const studyTagsHtml = studyTasks.filter(t=>t.tag).map(t=>`<span class="day-tag ${t.cls}">${t.tag}</span>`).join("");
+
+      // Detail HTML
+      let scheduleSection = "";
+      if (type==="fast") {
+        scheduleSection = `
+          <div class="detail-section section-fast">
+            <div class="detail-section-title">ROTINA DO DIA</div>
+            <div class="detail-items">
+              ${fastData.items.map(i=>`<div class="detail-item"><div class="detail-time">${i.time}</div><div class="detail-text">${i.text}</div></div>`).join("")}
+            </div>
+            <div class="detail-section-title" style="margin-top:10px">PODE CONSUMIR</div>
+            <div class="allowed-chips">${fastData.allowed.map(a=>`<span class="chip">${a}</span>`).join("")}</div>
+            <div class="tip-text">💡 ${fastData.tip}</div>
+          </div>`;
+      } else {
+        scheduleSection = `
+          <div class="detail-section section-fast">
+            <div class="detail-section-title">ALIMENTAÇÃO</div>
+            <div class="detail-items">
+              ${fastData.items.map(i=>`<div class="detail-item"><div class="detail-time">${i.time}</div><div class="detail-text">${i.text}</div></div>`).join("")}
+            </div>
+            <div class="tip-text">💡 ${fastData.tip}</div>
+          </div>`;
+      }
+
+      let studySection = "";
+      if (studyTasks.length > 0) {
+        studySection = `
+          <div class="detail-section section-study">
+            <div class="detail-section-title">TAREFAS DE HOJE</div>
+            <div class="task-list">
+              ${studyTasks.map((t, ti) => {
+                const tid = `${uid}-t${ti}`;
+                return `
+                  <div class="task-item" id="ti-${tid}">
+                    <div class="task-check" id="chk-${tid}" onclick="toggleTask('${tid}')"></div>
+                    <div>
+                      <div class="task-label" onclick="toggleTask('${tid}')">${t.label}</div>
+                      <div class="task-meta">${t.detail}</div>
+                      ${t.meta ? `<div class="task-meta" style="color:var(--text-light)">⏱ ${t.meta}</div>` : ""}
+                    </div>
+                  </div>`;
+              }).join("")}
+            </div>
+          </div>`;
+      } else {
+        studySection = `
+          <div class="detail-section section-study">
+            <div class="detail-section-title">TAREFAS DE HOJE</div>
+            <div style="font-size:12px;color:var(--text-muted);font-style:italic">Dia livre 🎉 Descanse ou revise o que aprendeu na semana.</div>
+          </div>`;
+      }
+
+      html += `
+        <div class="day-row${isToday?" is-today":""}" id="${uid}" onclick="toggleDay('${uid}')">
+          <div class="day-left">
+            <div class="day-name">${dayN}</div>
+            <div class="day-num">${dateN}</div>
+          </div>
+          <div class="day-right">
+            <div class="day-tags">
+              <span class="day-tag ${fastTagCls}">${fastTag}</span>
+              ${studyTagsHtml}
+              <span class="chevron">▾</span>
+            </div>
+            <div class="day-title">${mainTitle}</div>
+            <div class="day-desc">${mainDesc}</div>
+          </div>
+        </div>
+        <div class="day-detail" id="detail-${uid}">
+          ${scheduleSection}
+          ${studySection}
+        </div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  root.innerHTML = html;
+}
+
+buildCalendar();
+
+window.addEventListener("load", () => {
+  const todayRow = document.querySelector(".day-row.is-today");
+  if (todayRow) {
+    const uid = todayRow.id;
+    document.getElementById("detail-"+uid)?.classList.add("open");
+    todayRow.classList.add("expanded");
+  }
+});
+
+// Register service worker
+if ("serviceWorker" in navigator) {
+  const swCode = `const CACHE = "meu-plano-v2";
+self.addEventListener("install", e => { self.skipWaiting(); });
+self.addEventListener("activate", e => { self.clients.claim(); });
+self.addEventListener("fetch", e => {
+  e.respondWith(fetch(e.request).catch(() => new Response("Offline")));
+});`;
+  const blob = new Blob([swCode], {type: "application/javascript"});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).then(() => {
+    console.log("SW registrado!");
+  }).catch(e => console.log("SW erro:", e));
+}
+
+// PWA install prompt
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById("install-banner");
+  if (banner) banner.style.display = "flex";
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      const banner = document.getElementById("install-banner");
+      if (banner) banner.style.display = "none";
+    });
+  }
+}
+
+window.addEventListener("appinstalled", () => {
+  const banner = document.getElementById("install-banner");
+  if (banner) banner.style.display = "none";
+});
+</script>
+</body>
+</html>
